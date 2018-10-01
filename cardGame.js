@@ -1,5 +1,5 @@
-// Display cards in the Card Game
-//Updated on 25.09.18
+// Cards Game
+//Updated on 01.10.18
 
 console.log
 ("Welcome to Cards Game, let us the see the cards available in the Card Game");
@@ -14,7 +14,12 @@ function createDeck(){
     let deckOfCards = [];
     for (let cardIdx = 0; cardIdx < cardShapes.length; cardIdx++){
         for (otherIdx = 0; otherIdx < otherCards.length; otherIdx++){
-            deckOfCards.push(otherCards[otherIdx] + ' of ' + cardShapes[cardIdx]);
+            let stackCard = {
+                other : otherCards[otherIdx],
+                shape : cardShapes[cardIdx]
+            };
+            deckOfCards.push(stackCard);
+            //deckOfCards.push(otherCards[otherIdx] + ' of ' + cardShapes[cardIdx]);
             }
     }
     return deckOfCards;
@@ -25,11 +30,16 @@ function createDeck(){
   //console.log("Function pick");
   let deckOfCards = createDeck();
 
-  for ( let deckIdx = 0; deckIdx < deckOfCards.length; deckIdx++ ){
+function getCardString(stackCard)
+{
+  return (stackCard.other + " of " + stackCard.shape);
+
+}
+ /* for ( let deckIdx = 0; deckIdx < deckOfCards.length; deckIdx++ ){
   //console.log(deckOfCards);
   console.log (deckOfCards[deckIdx]);
   }
-
+*/
 function pickNextCard()
 {
   return deckOfCards.shift();
@@ -39,6 +49,6 @@ function pickNextCard()
 
 
 let PlayerCards= [pickNextCard(),pickNextCard()];
-console.log ("You Picked"+" " +PlayerCards[0] );
-console.log ("You Picked"+" " +PlayerCards[1] );
+console.log ("You Picked"+" " +getCardString(PlayerCards[0]) );
+console.log ("You Picked"+" " +getCardString(PlayerCards[1]) );
 //console.log(deckOfCards);
