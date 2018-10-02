@@ -1,5 +1,5 @@
-// Cards Game
-//Updated on 01.10.18
+// Display cards in the Card Game
+//Updated on 25.09.18
 
 console.log
 ("Welcome to Cards Game, let us the see the cards available in the Card Game");
@@ -9,6 +9,21 @@ let otherCards = ['King', 'Queen', 'Jack', 'Ace','Ten'
                   ,'Nine', 'Eight', 'Seven', 'Six', 'Five'
                   ,'Four', 'Three', 'Two'];
 //let deckOfCards = [];
+
+let textArea = document.getElementById('text-area');
+let newGameButton = document.getElementById('new-game');
+let hitButton = document.getElementById('hit-button');
+let stayButton = document.getElementById('stay-button');
+
+hitButton.style.display = 'none';
+stayButton.style.display = 'none';
+
+newGameButton.addEventListener('click', function(){
+  textArea.innerText = 'Game Started';
+  newGameButton.style.display='none';
+  hitButton.style.display='inline';
+  stayButton.style.display='inline';
+});
 
 function createDeck(){
     let deckOfCards = [];
