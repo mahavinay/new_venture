@@ -40,6 +40,7 @@ newGameButton.addEventListener('click', function(){
   deckOfCards = createDeck();
   shuffleDeck(deckOfCards);
   dealerCards = [pickNextCard(),pickNextCard()];
+  //console.log(dealerCards);
   playerCards = [pickNextCard(),pickNextCard()];
 
   newGameButton.style.display='none';
@@ -48,6 +49,11 @@ newGameButton.addEventListener('click', function(){
   stayButton.style.display='inline';
 
 });
+
+
+
+
+
 
 function createDeck(){
     let deckOfCards = [];
@@ -81,6 +87,7 @@ function getCardString(stackCard)
 */
 function pickNextCard()
 {
+  console.log("function picknextcard called");
   return deckOfCards.shift();
 }
 
@@ -91,10 +98,42 @@ function showStatus()
     return;
   }
 
-  for ( let i=0; i<deckOfCards.length;i++)
+  let dealerCardString = '';
+  console.log(dealerCards.length);
+  for (let i=0; i<dealerCards.length;i++){
+  dealerCardString+=getCardString(dealerCards[i])+ '\n';
+  console.log(dealerCardString);
+  }
+
+  let playerCardString='';
+  for (let i=0; i<playerCards.length;i++){
+  playerCardString+=getCardString(playerCards[i])+ '\n';
+  }
+
+  updateScores();
+
+  textArea.innerText+= '\n\n'+'Dealer Has :' + '\n' + dealerCardString +
+                      'Score : ' +dealerScore+'\n\n'+
+
+                      'Player Has :'+ '\n'+ playerCardString +
+                      'Score :'+ playerScore+'\n\n';
+
+  if (gameOver){
+    if (playerWon){
+    textArea.innerText+="YOU WIN";
+    }
+    else {
+    textArea.innerText+="DEALER WIN";
+      }
+  newGameButton.style.display='inline';
+  hitButton.style.display='none';
+  stayButton.style.display='none';
+  }
+
+/*  for ( let i=0; i<deckOfCards.length;i++)
   {
     textArea.innerText += '\n'+getCardString(deckOfCards[i]) ;
-  }
+  }*/
 }
 
 function shuffleDeck(deckOfCards)
@@ -106,11 +145,69 @@ function shuffleDeck(deckOfCards)
     let tmp =  deckOfCards[swapIdx];
     deckOfCards[swapIdx] = deckOfCards[i];
     deckOfCards[i] = tmp;
-    console.log(tmp)
+    console.log(tmp);
   }
 
   //return;
 }
+
+function updateScores()
+{
+  dealerScore=getScore(dealerCards);
+  playerScore=getScore(playerCards);
+}
+
+function getScore(cardArray){
+  let score = 0;
+  let hasAce=false;
+  for (let i=0; i<cardArray;i++){
+  let card=cardArray[i];
+  score+= score + getNumericValueCard(card);
+  if (card.value == "Ace" ){
+    hasAce=true;
+  }
+  if (hasAce && score+10<=21){
+    return score+10;
+  }
+  return score;
+  }
+}
+
+function getNumericValueCard(card)
+{
+  switch (card.value){
+    case 'Ace':
+      return 1;
+    case 'Two':
+      return 2;
+
+    case 'Three':
+      return 3;
+
+    case 'Four':
+      return 4;
+
+    case 'Five':
+      return 5;
+
+    case 'Six':
+      return 6;
+
+    case 'Seven':
+      return 7;
+
+    case 'Eight':
+      return 8;
+    case 'Nine':
+      return 9;
+    default:
+      return 10;
+
+  }
+}
+
+
+
 
 
 //pickNextCard();
