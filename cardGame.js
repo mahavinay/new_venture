@@ -30,31 +30,45 @@ let gameStarted = false,
 
 hitButton.style.display = 'none';
 stayButton.style.display = 'none';
-showStatus();
+//showStatus();
 
+//New Game Button
 newGameButton.addEventListener('click', function(){
   gameStarted = true;
   gameOver = false;
-  PlayerWon = false;
+  playerWon = false;
 
   deckOfCards = createDeck();
   shuffleDeck(deckOfCards);
   dealerCards = [pickNextCard(),pickNextCard()];
-  //console.log(dealerCards);
+  //console.log("button dealercard",dealerCards);
   playerCards = [pickNextCard(),pickNextCard()];
+  //updateScores();
 
   newGameButton.style.display='none';
-  showStatus();
   hitButton.style.display='inline';
   stayButton.style.display='inline';
+  showStatus();
+});
 
+
+//Hit Button
+hitButton.addEventListener('click',function(){
+playerCards.push(pickNextCard());
+checkForEndOfGame();
+showStatus();
+});
+
+//Stay Button
+stayButton.addEventListener('click',function(){
+  gameOver=true;
+  checkForEndOfGame();
+  showStatus();
 });
 
 
 
-
-
-
+//Deck of Cards
 function createDeck(){
     let deckOfCards = [];
     for (let cardIdx = 0; cardIdx < cardShapes.length; cardIdx++){
@@ -65,16 +79,12 @@ function createDeck(){
             };
             deckOfCards.push(stackCard);
             //deckOfCards.push(otherCards[otherIdx] + ' of ' + cardShapes[cardIdx]);
-            }
+        }
     }
     return deckOfCards;
-
 }
 
-
-  //console.log("Function pick");
- //let deckOfCards = createDeck();
-
+//Card
 function getCardString(stackCard)
 {
   return (stackCard.other + " of " + stackCard.shape);
@@ -85,12 +95,15 @@ function getCardString(stackCard)
   console.log (deckOfCards[deckIdx]);
   }
 */
+
+//Pick Next Card
 function pickNextCard()
 {
   console.log("function picknextcard called");
   return deckOfCards.shift();
 }
 
+//Display Status
 function showStatus()
 {
   if(!gameStarted){
@@ -99,10 +112,8 @@ function showStatus()
   }
 
   let dealerCardString = '';
-  console.log(dealerCards.length);
   for (let i=0; i<dealerCards.length;i++){
   dealerCardString+=getCardString(dealerCards[i])+ '\n';
-  console.log(dealerCardString);
   }
 
   let playerCardString='';
@@ -118,6 +129,7 @@ function showStatus()
                       'Player Has :'+ '\n'+ playerCardString +
                       'Score :'+ playerScore+'\n\n';
 
+  console.log("gameOver,playerWon", gameOver,playerWon);
   if (gameOver){
     if (playerWon){
     textArea.innerText+="YOU WIN";
@@ -125,6 +137,7 @@ function showStatus()
     else {
     textArea.innerText+="DEALER WIN";
       }
+
   newGameButton.style.display='inline';
   hitButton.style.display='none';
   stayButton.style.display='none';
@@ -136,6 +149,7 @@ function showStatus()
   }*/
 }
 
+//Shuffle Card
 function shuffleDeck(deckOfCards)
 {
   for (let i = 0; i<deckOfCards.length;i++)
@@ -145,37 +159,47 @@ function shuffleDeck(deckOfCards)
     let tmp =  deckOfCards[swapIdx];
     deckOfCards[swapIdx] = deckOfCards[i];
     deckOfCards[i] = tmp;
-    console.log(tmp);
+    //console.log(tmp);
   }
 
   //return;
 }
 
+//Update Score
 function updateScores()
 {
+  //console.log("DEALER CARDS:",dealerCards);
   dealerScore=getScore(dealerCards);
   playerScore=getScore(playerCards);
+
 }
 
 function getScore(cardArray){
   let score = 0;
   let hasAce=false;
-  for (let i=0; i<cardArray;i++){
-  let card=cardArray[i];
-  score+= score + getNumericValueCard(card);
-  if (card.value == "Ace" ){
+  for (let i=0; i < cardArray.length; i++){
+    //console.log(cardArray[i].other);
+    let card=cardArray[i].other;
+    //console.log("CARD",card);
+    //console.log("CARD VAL",cardVal.value);
+    score+=getNumericValueCard(card);
+    //console.log("SCORE","value",score,getNumericValueCard(card));
+    //console.log("SCORE",score);
+    if (card === 'Ace' ){
     hasAce=true;
+    }
   }
-  if (hasAce && score+10<=21){
+  if (hasAce && score+  10  <=  21){
     return score+10;
-  }
+    }
   return score;
   }
-}
+
 
 function getNumericValueCard(card)
 {
-  switch (card.value){
+  //console.log("card value",card.value)
+  switch (card){
     case 'Ace':
       return 1;
     case 'Two':
@@ -200,20 +224,49 @@ function getNumericValueCard(card)
       return 8;
     case 'Nine':
       return 9;
-    default:
+  default:
       return 10;
 
   }
 }
 
+//Check for end of Game
+function checkForEndOfGame(){
+  updateScores();
+  console.log("Score :  ", dealerScore,playerScore );
+  if (gameOver){
+    //let dealer take cards
+    while (dealerScore < playerScore
+          && playerScore <= 21
+          && dealerScore <= 21){
+          dealerCards.push(pickNextCard());
+          updateScores();
+          console.log("After dealer takes the card",playerScore,dealerScore);
+          }
+    }
+
+
+  if (playerScore > 21){
+    playerWon = false;
+    gameOver = true;
+    }
+
+    else if (dealerScore > 21){
+      playerWon = true;
+      gameOver = true;
+    }
+
+    else if (gameOver){
+
+       if (playerScore > dealerScore){
+         playerWon=true;
+       }
+         else {
+           playerWon = false;
+
+         }
+    }
+    }
 
 
 
-
-//pickNextCard();
-
-
-//let PlayerCards= [pickNextCard(),pickNextCard()];
-//console.log ("You Picked"+" " +getCardString(PlayerCards[0]) );
-//console.log ("You Picked"+" " +getCardString(PlayerCards[1]) );
-//console.log(deckOfCards);
