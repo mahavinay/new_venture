@@ -21,7 +21,8 @@ describe('Hotel Booking',function()
 					
 					element(by.css("button[class*='checkin']")).getText().then(function(text)
 					{ //check by commenting
-					console.log(text)	
+					console.log(text)
+					browser.sleep(5000);
 					})
 				
 				browser.actions().mouseMove(element(by.tagName("tbody")).element(by.css("time[datetime='2019-01-20']"))).perform().then(function()
@@ -59,7 +60,7 @@ describe('Hotel Booking',function()
 			})
 				
 				//Persons
-			element.all(by.tagName("span[class='roomtype-btn__label']")).get(0).click().then(function()
+			element.all(by.cssContainingText(".btn-horus__content","Eenpers.")).click().then(function()
 			{
 				browser.sleep(5000);
 							
@@ -69,8 +70,9 @@ describe('Hotel Booking',function()
 			element.all(by.css("button[data-log-id='3']")).count().then(function(items)
 			{
 			console.log("no.of rooms",items);
-			element(by.css("button[data-log-id='3']")).element(by.css("button[class='btn btn--deal btn--regular icon-bg-icn_arrow_deal fl-trailing']"))
-		
+			//element(by.css("button[data-log-id='3']")).
+			element.all(by.buttonText("Zie deal")).first().click();
+			browser.sleep(5000);
 			})
 
 		
