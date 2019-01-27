@@ -1,0 +1,73 @@
+
+function hotel()
+{
+	/*this.firstInput =element(by.model("first"));
+	this.secondInput =element(by.model("second"));
+	this.goButton=element(by.id("gobutton"));
+	this.result=element(by.css("h2[class='ng-binding']"));
+	this.color='Royal Blue';
+	this.engine='turbo';
+	this.brand='VW';*/
+	
+	this.enterCity=element(by.tagName("input[name='sQuery']"));
+	this.ziedealButton=element(by.buttonText("Zie deal"));
+	this.allziedealButton=element.all(by.buttonText("Zie deal"));
+	this.checkincal=element(by.tagName("tbody"));
+	this.checkinDate=element(by.tagName("tbody")).element(by.css("time[datetime='2019-02-22']"));
+	this.checkoutDate=element(by.tagName("tbody")).element(by.css("time[datetime='2019-02-26']"));
+	this.month=element(by.css("th[id='cal-heading-month']"));
+	this.noOfPersons=element.all(by.cssContainingText(".btn-horus__content","Eenpers."));
+	this.roomsAvailable=element.all(by.css("button[data-log-id='3']"));
+	
+	this.getURL = function()
+	{
+		browser.get('https://www.trivago.com/');
+		
+	};
+	
+	this.getMonth=function(monthName)
+	{
+		switch (monthName)
+		{
+		case "januari 2019":
+			return 1;
+			break;
+		case "februari 2019":
+			return 2;
+			break;
+		case "maart 2019":
+			return 3;
+			break;
+		case "april 2019":
+			return 4;
+			break;
+		case "mei 2019":
+			return 5;
+			break;
+		case "juni 2019":
+			return 6;
+			break;
+		case "juli 2019":
+			return 7;
+			break;
+		case "augustus 2019":
+			return 8;
+			break;
+		case "september 2019":
+			return 9;
+			break;
+		case "oktober 2019":
+			return 10;
+			break;
+		case "november 2019":
+			return 11;
+			break;
+		case "december 2019":
+			return 12;
+			break;
+		}
+	}
+
+};
+
+module.exports = new hotel();
