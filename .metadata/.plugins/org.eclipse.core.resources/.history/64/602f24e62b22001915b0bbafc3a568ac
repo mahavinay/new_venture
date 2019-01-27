@@ -1,0 +1,11 @@
+module.exports=
+{
+	datadriven:
+	{
+		FirstData:
+			{
+			month:"februari 2019"
+			},
+	}
+}
+//console.log(datadrive.month);
